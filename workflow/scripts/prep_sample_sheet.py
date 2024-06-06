@@ -77,7 +77,10 @@ def write_sample_sheet(sample_sheet, out_file):
     base_format="{}\t{}\t{}\t{}\n"
     with open(out_file, "w+") as sample_tsv:
         sample_tsv.write(base_format.format("sample", "dataset", "forward_read", "reverse_read"))
-        for key in sample_sheet:
+        # Sort dictionary by alphabetical order of keys (sample names)
+        sorted_samples = list(sample_sheet.keys())
+        sorted_samples.sort()
+        for key in sorted_samples:
             column=sample_sheet[key]
             sample_tsv.write(base_format.format(column[0], column[1], column[2], column[3]))
            
@@ -106,10 +109,4 @@ for i in files:
                         print("{} in sample sheet already".format)
                     else:
                         sample_sheet[i_sample] = [i_sample, args.dataset, i, j]
-
-# Sort dictionary by alphabetical order of keys (sample names)
-sorted_samples = list(sample_sheet.keys())
-sorted_samples.sort()
-sample_sheet = {i: sample_sheet[i] for i in sorted_samples}
-
 write_sample_sheet(sample_sheet, args.out)
